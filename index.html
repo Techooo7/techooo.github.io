@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="./styles.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>驱龙游戏</title>
+</head>
+<body>
+    <div id="game">
+      <div id="stats">
+        <span class="stat">经验值: <strong><span id="xpText">0</span></strong></span>
+        <span class="stat">生命值: <strong><span id="healthText">100</span></strong></span>
+        <span class="stat">金币: <strong><span id="goldText">50</span></strong></span>
+      </div>
+      <div id="controls">
+        <button id="button1">前往商店</button>
+        <button id="button2">前往洞穴</button>
+        <button id="button3">与龙战斗</button>
+      </div>
+      <div id="monsterStats">
+        <span class="stat">怪物名称: <strong><span id="monsterName"></span></strong></span>
+        <span class="stat">生命值: <strong><span id="monsterHealth"></span></strong></span>
+      </div>
+      <div id="text">
+        欢迎来到驱龙游戏。你必须击败城镇的龙。你现在在城镇广场。你想去哪里？请使用上面的按钮。
+      </div>
+    </div>
+    <script src="./script.js"></script>
+</body>
+</html>
