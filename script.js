@@ -5,6 +5,7 @@ let currentWeapon = 0;
 let fighting;
 let monsterHealth;
 let inventory = ["木棍"];
+let startTime;
 
 const button1 = document.querySelector('#button1');
 const button2 = document.querySelector("#button2");
@@ -20,7 +21,7 @@ const weapons = [
   { name: '木棍', power: 5 },
   { name: '匕首', power: 30 },
   { name: '爪锤', power: 50 },
-  { name: '剑', power: 100 }
+  { name: '湯包签名的剑', power: 100 }
 ];
 const monsters = [
   {
@@ -36,7 +37,7 @@ const monsters = [
   {
     name: "龙",
     level: 20,
-    health: 300
+    health: 888
   }
 ];
 const locations = [
@@ -91,18 +92,37 @@ const locations = [
 ];
 
 // 绑定按钮点击事件
-button1.onclick = goStore; // 绑定前往商店事件
-button2.onclick = goCave;  // 绑定前往洞穴事件
-button3.onclick = fightDragon; // 绑定与龙战斗事件
+button1.onclick = function() {
+  startGameTimer();
+  goStore();
+}; // 绑定前往商店事件
+button2.onclick = function() {
+  startGameTimer();
+  goCave();
+}; // 绑定前往洞穴事件
+button3.onclick = function() {
+  startGameTimer();
+  fightDragon();
+}; // 绑定与龙战斗事件
 
 function update(location) {
   monsterStats.style.display = "none"; // 隐藏怪物状态
   button1.innerText = location["button text"][0]; // 设置按钮文本
   button2.innerText = location["button text"][1];
   button3.innerText = location["button text"][2];
-  button1.onclick = location["button functions"][0]; // 绑定按钮点击事件
-  button2.onclick = location["button functions"][1];
-  button3.onclick = location["button functions"][2];
+  // 绑定按钮点击事件
+  button1.onclick = function(){
+    location["button functions"][0]();
+    startGameTimer();
+  } 
+  button2.onclick = function(){
+    location["button functions"][1]();
+    startGameTimer();
+  }  
+  button3.onclick = function(){
+    location["button functions"][2]();
+    startGameTimer();
+  };
   text.innerHTML = location.text; // 更新文本内容
 }
 
@@ -143,7 +163,7 @@ function buyWeapon() {
       text.innerText = "你的金币不足以购买武器。";
     }
   } else {
-    text.innerText = "你已经有了最强大的武器！";
+    text.innerText = "你已经有了宇宙最强武器！";
     button2.innerText = "以15金币出售武器";
     button2.onclick = sellWeapon; // 绑定出售武器事件
   }
@@ -238,9 +258,17 @@ function sellWeapon() {
   }
   
   function winGame() {
+    const elapsedTime = (Date.now() - startTime) / 1000; // 计算经过的秒数
     update(locations[6]); // 更新到游戏胜利的场景
+    text.innerText +="\n通关时间：" + (elapsedTime.toFixed(2)) + " 秒。";
   }
   
+  function startGameTimer() {
+    if (startTime === undefined) { // 检查是否已经设置了开始时间
+        startTime = Date.now(); // 开始计时
+    }
+  }
+
   function restart() {
     xp = 0;
     health = 100;
@@ -250,6 +278,7 @@ function sellWeapon() {
     goldText.innerText = gold;
     healthText.innerText = health;
     xpText.innerText = xp;
+    startTime = undefined; // 重置开始时间
     goTown(); // 重置游戏状态并返回城镇广场
   }
   
@@ -265,16 +294,16 @@ function sellWeapon() {
     pick(8);
   }
   
-  function pick(猜测) {
+  function pick(guess) {
     const numbers = [];
     while (numbers.length < 10) {
       numbers.push(Math.floor(Math.random() * 11));
     }
-    text.innerText = "你选择了 " + 猜测 + ". 以下是随机数字：\n";
+    text.innerText = "你选择了 " + guess + ". 以下是随机数字：\n";
     for (let i = 0; i < 10; i++) {
       text.innerText += numbers[i] + "\n";
     }
-    if (numbers.includes(猜测)) {
+    if (numbers.includes(guess)) {
       text.innerText += "正确！你赢得了20金币！";
       gold += 20;
       goldText.innerText = gold;
